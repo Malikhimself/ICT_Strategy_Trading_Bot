@@ -61,7 +61,7 @@ class DerivHandler(ExecutionHandler):
         logger.info("Deriv Disconnected.")
 
     def check_connection(self):
-        if self.ws and not self.ws.closed and self.is_authorized:
+        if self.ws and self.ws.open and self.is_authorized:
             return True
         return False
 
