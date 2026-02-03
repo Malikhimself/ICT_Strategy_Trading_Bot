@@ -54,6 +54,12 @@ class MetaApiHandler(ExecutionHandler):
         logger.info(f"Connected to MetaApi Account: {self.account.name}")
         return True
 
+    def check_connection(self):
+        """Checks if connected to MetaApi."""
+        if self.connection and self.connection.synchronized:
+            return True
+        return False
+
     def shutdown(self):
         if self.connection:
             self.loop.run_until_complete(self.connection.close())

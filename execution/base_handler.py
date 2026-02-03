@@ -13,6 +13,11 @@ class ExecutionHandler(ABC):
         pass
 
     @abstractmethod
+    def check_connection(self) -> bool:
+        """Checks if connection is active."""
+        pass
+
+    @abstractmethod
     def shutdown(self):
         """Closes connection."""
         pass

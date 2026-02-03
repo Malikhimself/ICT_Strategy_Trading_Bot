@@ -28,6 +28,9 @@ class DerivHandler(ExecutionHandler):
              return False
         return True # Real connection happens on demand or in background thread
 
+    def check_connection(self):
+        return True
+
     def get_rates(self, symbol, timeframe, num_candles=100):
         # Implementation via deriv-api library is cleaner
         # Placeholder
