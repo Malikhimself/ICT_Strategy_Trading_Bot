@@ -1,0 +1,8 @@
+pandas
+numpy
+python-dotenv
+pytz
+requests
+metaapi-cloud-sdk
+websockets
+asyncio
