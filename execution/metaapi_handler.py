@@ -56,7 +56,7 @@ class MetaApiHandler(ExecutionHandler):
 
     def check_connection(self):
         """Checks if connected to MetaApi."""
-        if self.connection and self.connection.synchronized:
+        if self.account and self.account.connected:
             return True
         return False
 
