@@ -3,7 +3,7 @@ import signal
 import sys
 from config import Config
 from utils.logger import setup_logger
-from execution.mt5_handler import MT5Handler
+
 from strategies.ict_combined import ICTStrategy
 
 # Initialize Logger
