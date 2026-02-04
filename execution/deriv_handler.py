@@ -96,7 +96,7 @@ class DerivHandler(ExecutionHandler):
         granularity = tf_map.get(timeframe, 3600)
         
         req = {
-            "ticks_history": symbol,
+            "ticks_history": self._map_symbol(symbol),
             "adjust_start_time": 1,
             "count": num_candles,
             "end": "latest",
@@ -107,6 +107,17 @@ class DerivHandler(ExecutionHandler):
         
         await self.ws.send(json.dumps(req))
         resp = json.loads(await self.ws.recv())
+
+    def _map_symbol(self, symbol):
+        """Maps standard symbols to Deriv API symbols."""
+        mapping = {
+            "EURUSD": "frxEURUSD",
+            "GBPUSD": "frxGBPUSD",
+            "USDJPY": "frxUSDJPY",
+            "XAUUSD": "frxXAUUSD",
+            "BTCUSD": "cryBTCUSD"
+        }
+        return mapping.get(symbol, symbol)
         
         if "error" in resp:
             logger.error(f"Error fetching candles: {resp['error']['message']}")
@@ -139,15 +150,10 @@ class DerivHandler(ExecutionHandler):
 
     async def _get_price_async(self, symbol):
         # We can use 'price_proposal' or just 'ticks' for latest
-        req = {
-            "ticks": symbol
-        }
-        # Note: This subscribes to a stream if we aren't careful, but we just want one tick.
-        # However, Deriv 'ticks' without 'subscribe' is not standard request-response for one tick usually? 
-        # Actually 'ticks_history' with count=1 is safer for snapshot.
+        mapped_symbol = self._map_symbol(symbol)
         
         req = {
-            "ticks_history": symbol,
+            "ticks_history": mapped_symbol,
             "adjust_start_time": 1,
             "count": 1,
             "end": "latest",
@@ -191,7 +197,7 @@ class DerivHandler(ExecutionHandler):
             "basis": "stake",
             "contract_type": contract_type,
             "currency": "USD", # Assuming USD account
-            "symbol": symbol,
+            "symbol": self._map_symbol(symbol),
             "multiplier": 100 # simplified multiplier, configurable?
         }
         
