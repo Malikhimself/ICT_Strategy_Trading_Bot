@@ -61,9 +61,20 @@ class DerivHandler(ExecutionHandler):
         logger.info("Deriv Disconnected.")
 
     def check_connection(self):
-        if self.ws and self.ws.open and self.is_authorized:
-            return True
-        return False
+        try:
+            if not self.ws:
+                return False
+            # Check 'open' property if exists, else check 'state' (1 = OPEN)
+            if hasattr(self.ws, 'open'):
+                if not self.ws.open:
+                    return False
+            elif hasattr(self.ws, 'state'):
+                if self.ws.state != 1: # 1 is State.OPEN
+                    return False
+            
+            return self.is_authorized
+        except Exception:
+            return False
 
     def get_rates(self, symbol, timeframe, num_candles=100):
         try:
