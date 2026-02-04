@@ -36,6 +36,10 @@ class DerivHandler(ExecutionHandler):
 
     async def _connect_and_auth(self):
         try:
+            # DEBUG: Check what we are actually sending
+            token_masked = f"{self.token[:4]}...{self.token[-4:]}" if self.token and len(self.token) > 8 else "INVALID"
+            logger.info(f"Connecting with App ID: {self.app_id}, Token Length: {len(self.token)}, Token: {token_masked}")
+            
             self.ws = await websockets.connect(self.ws_url)
             
             # Authorize
