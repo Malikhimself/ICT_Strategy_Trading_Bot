@@ -107,17 +107,6 @@ class DerivHandler(ExecutionHandler):
         
         await self.ws.send(json.dumps(req))
         resp = json.loads(await self.ws.recv())
-
-    def _map_symbol(self, symbol):
-        """Maps standard symbols to Deriv API symbols."""
-        mapping = {
-            "EURUSD": "frxEURUSD",
-            "GBPUSD": "frxGBPUSD",
-            "USDJPY": "frxUSDJPY",
-            "XAUUSD": "frxXAUUSD",
-            "BTCUSD": "cryBTCUSD"
-        }
-        return mapping.get(symbol, symbol)
         
         if "error" in resp:
             logger.error(f"Error fetching candles: {resp['error']['message']}")
@@ -140,6 +129,17 @@ class DerivHandler(ExecutionHandler):
             })
             
         return pd.DataFrame(data)
+
+    def _map_symbol(self, symbol):
+        """Maps standard symbols to Deriv API symbols."""
+        mapping = {
+            "EURUSD": "frxEURUSD",
+            "GBPUSD": "frxGBPUSD",
+            "USDJPY": "frxUSDJPY",
+            "XAUUSD": "frxXAUUSD",
+            "BTCUSD": "cryBTCUSD"
+        }
+        return mapping.get(symbol, symbol)
 
     def get_current_price(self, symbol):
         try:

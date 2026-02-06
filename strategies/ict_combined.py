@@ -59,7 +59,7 @@ class ICTStrategy:
         current_dt = datetime.now().astimezone()
         session_status = self.session_manager.is_in_killzone(current_dt)
         if not session_status:
-            # logger.debug(f"{symbol} not in killzone. Skipping.")
+            logger.info(f"{symbol} not in killzone. Skipping.")
             return
 
         # --- Step 3: M15 Confirmation (MSS) ---
